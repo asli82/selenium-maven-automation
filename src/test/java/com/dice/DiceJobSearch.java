@@ -1,6 +1,12 @@
 package com.dice;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
@@ -10,8 +16,33 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class DiceJobSearch {
+/*
+	pass each item to search box and print accordingly.
+modify your arraylist 
 
-	public static void main(String[] args) {
+java-1234
+
+2) Store all keywords into a text file 
+read the text file and  repeat above steps.
+
+store keyword and results count into an arraylist.
+----
+
+after closing browser.
+print contents of arraylist that was updated each time 
+we looped.
+https://github.com/CybertekSchool/selenium-maven-automation
+Job_List.txt
+	*/
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		List<String> arr = new ArrayList<>();
+		
+		FileReader fr = new FileReader("myList.txt");
+		BufferedReader br = new BufferedReader(fr);
+		
+		String line = "";
+		while((line = br.readLine()) != null) {
+			String addingElement = "";
 		//set up chrome driver path
 		WebDriverManager.chromedriver().setup();
 //selenium daki esiti
@@ -38,7 +69,7 @@ public class DiceJobSearch {
 			throw new RuntimeException("Step FAIL. Dice homepage did not load successfully");
 		}
 		
-		String keyword = "java jobs";
+		String keyword = line;
 		driver.findElement(By.id("search-field-keyword")).clear();
 		driver.findElement(By.id("search-field-keyword")).sendKeys(keyword);
 		
@@ -61,10 +92,36 @@ public class DiceJobSearch {
 			System.out.println("Step FAIL : Keyword : " + keyword + " search returned " +
 					countResult + " results in " + location);
 		}
-		
-		
+		addingElement = keyword + "-" + countResult;
+		arr.add(addingElement);
 		driver.close();
 		System.out.println("TEST COMPLETED" + LocalTime.now());
+		}
+		System.out.println(arr.toString());
+		/*
+		HOMEWORK
+		1)Create arraylist of keywords.
+add 20 different keywords
+list.add("java");
+
+pass each item to search box and print accordingly.
+modify your arraylist 
+
+java-1234
+
+2) Store all keywords into a text file 
+read the text file and  repeat above steps.
+
+store keyword and results count into an arraylist.
+----
+
+after closing browser.
+print contents of arraylist that was updated each time 
+we looped.
+https://github.com/CybertekSchool/selenium-maven-automation
+Job_List.txt
+		
+		*/
 	}
 
 }
